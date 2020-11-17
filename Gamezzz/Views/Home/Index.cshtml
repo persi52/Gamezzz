@@ -1,0 +1,26 @@
+﻿@inject SignInManager<AppUser> signInManager;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @if (signInManager.IsSignedIn(User))
+    {
+        <h1 class="display-4 ">Welcome to <p style="color:green;">Gamez</p> </h1>
+
+        <h1 class="display-4">@User.Identity.Name</h1>
+        <p style="color:green;">Site, where you can find games for yourself!</p>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome to Gamez</h1>
+        <p style="color:green;">Site, where you can find games for yourself!</p>
+    }
+</div>
+</br>
+<div style="display:flex; justify-content:space-between;">
+<img  src="css/photos/witcher3.jpg" width="250px" height="300px" />
+<img  src="~/css/photos/redDeadRedemption.jpg" width="250px" height="300px" />
+<img  src="~/css/photos/Fifa 21.jpg" width="250px" height="300px" />
+</div>

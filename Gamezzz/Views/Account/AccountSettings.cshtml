@@ -1,0 +1,11 @@
+﻿@inject SignInManager<AppUser> signInManager;
+
+@{
+    ViewData["Title"] = "AccountSettings";
+}
+    
+     <h1 class="display-4 ">Account settings</h1>
+     <br/> <br/>
+     <a style="background-color: forestgreen; border-color: white;" class="btn btn-primary" 
+        asp-area="" asp-controller="Account" asp-action="ChangePassword">Change password </a>
+    

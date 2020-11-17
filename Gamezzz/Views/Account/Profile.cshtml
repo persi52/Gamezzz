@@ -1,0 +1,9 @@
+﻿@inject SignInManager<AppUser> signInManager;
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Profile information</h1>
+<h3 style="color:green; display:inline;">Email:</h3><h3 style="display:inline;">  @User.Identity.Name</h3>
+
