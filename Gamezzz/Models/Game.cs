@@ -12,14 +12,12 @@ namespace Gamezzz.Models
         public int Id { get; set; }
 
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; }        
         [Required]
-        public string Author { get; set; }
-        [Required]
-        public string Category { get; set; }
+        public List<string> Category { get; set; }
         [Required]
         [Range(1990, 2020)]
-        public int YearOfRelease { get; set; }
+        public string YearOfRelease { get; set; }
 
         public string photoName { get; set; }
        

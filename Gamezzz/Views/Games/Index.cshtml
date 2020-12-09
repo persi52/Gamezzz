@@ -1,5 +1,7 @@
 ﻿@inject SignInManager<AppUser> signInManager;
-
+    <head>
+        <link rel="stylesheet" href="site.css" />
+    </head>
 <br />
 <div class="container row p-0 m-0">
     <div class"col-6">
@@ -10,27 +12,27 @@
             Add New Game
         </a>
 
-    </div>   
-        <div class="col-12 border p-3">
-            <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Year Of Release</th>
-                        <th></th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-
+    </div>
+    <div class="col-12 border p-3">
+        <table id="DT_load" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Year Of Release</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
     </div>
 
+</div>
+
 @section Scripts{
-    <script src="~/js/TableScript.js"></script>    
+    <script src="~/js/TableScript.js"></script>
 }
+
 
 
 

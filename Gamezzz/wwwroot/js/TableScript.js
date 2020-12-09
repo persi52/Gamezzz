@@ -9,37 +9,32 @@ function loadDataTable() {
     dataTable = $('#DT_load').DataTable({
         "destroy": true,
         "ajax": {
-            "url": "/games/getall/",
+            "url": "/games/getalltolist/",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
             {
                 "data": "photoName", 
-                "render": function (data) {
-                    return '<img src="css/photos/' + data + '.jpg" width="200px" height=250px" />';
+                "render": function (data) {                    
+                    return '<img class="gameOnListImage" alt="elo" src="'+data+'" />';                    
                 }, "width": "20%"
 
             }, 
 
-            { "data": "title", "width": "30%" },
-            { "data": "author", "width": "20%" },
-            { "data": "category", "width": "10%" },
+            { "data": "title", "width": "30%" },           
+            { "data": "category", "width": "30%" },
             { "data": "yearOfRelease", "width": "20%" },
             {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">                       
                            
-                            <a class='btn btn-success text-white' style='cursor:pointer; width:100px;'
+                            <button class="CustomBtn CustomBtn2" 
                             onclick=AddToFavourites('/Games/AddToFavourites?gameId='+${data})>
                                 Add to Favourites
-                            </a>                           
+                            </button>                        
                             
-                            <a class='btn btn-success text-white' style='cursor:pointer; width:100px;'
-                            onclick=AddToFavourites('/Games/AddToFavourites?gameId='+${data})>
-                                Add to Favouriadasds
-                            </a>
                                                     
                             &nbsp;
                             <br/>

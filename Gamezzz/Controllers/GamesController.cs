@@ -4,9 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Gamezzz.Controllers
 {
@@ -16,16 +20,19 @@ namespace Gamezzz.Controllers
         private readonly ApplicationDbGamesContext _gamesDb;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         [BindProperty]
         public Game Game { get; set; }
 
-        public GamesController(ApplicationDbContext usersDb, ApplicationDbGamesContext gamesDb, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public GamesController(ApplicationDbContext usersDb, ApplicationDbGamesContext gamesDb, UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager, IWebHostEnvironment hostEnvironment)
         {
             _usersDb = usersDb;
             _gamesDb = gamesDb;
             _userManager = userManager;
             _signInManager = signInManager;
+            webHostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -97,14 +104,97 @@ namespace Gamezzz.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            
+
             return Json(new { data = await _gamesDb.Games.ToListAsync() });
+
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllToList()
+        {
+            var _gameList = new List<Game>();
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://rawg-video-games-database.p.rapidapi.com/games"),
+                Headers =
+            {
+            { "x-rapidapi-key", "40bd4196d2msh88b635a99b5963ap158479jsn932f246e0e82" },
+            { "x-rapidapi-host", "rawg-video-games-database.p.rapidapi.com" },
+            },
+            };
+            //int i = 0;
+            using (var response = await client.SendAsync(request))
+            {
+                DateTime date = new DateTime();
+                List<string> categories;
+                string genre;
+
+                response.EnsureSuccessStatusCode();
+
+                var body = await response.Content.ReadAsStringAsync();
+
+                dynamic o = JsonConvert.DeserializeObject(body);
+
+                for (int j = 0; j < o.results.Count; j++)
+                {
+                    categories = new List<string>();
+                    date = o.results[j].released;
+                    int genresCount = o.results[j].genres.Count;                    
+
+                        for (int i = 0; i < genresCount; i++)
+                    {
+                        genre = " " + o.results[j].genres[i].name;
+                        categories.Add(genre);
+                    }
+
+                    Game game = new Game
+                    {
+                        Id = o.results[j].id,
+                        Title = o.results[j].name,
+                        Category = categories,
+                        YearOfRelease = date.ToString("yyyy"),
+                        photoName = o.results[j].background_image
+                    };                    
+                    _gameList.Add(game);
+                }
+                
+            }
+
+           
+            System.Text.Json.JsonSerializer.Serialize(_gameList);
+            Console.WriteLine(_gameList[0].photoName);
+            return Json(new { data = _gameList});
+            
+        }
+
 
         [HttpGet]
         public async Task onGet(int id)
         {
             Game = await _gamesDb.Games.FindAsync(id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> New(GameViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = UploadedFile(model);
+
+                Game game = new Game
+                {
+                    Title = model.Title,               
+                                                      
+                    photoName = uniqueFileName,
+                };
+                _gamesDb.Add(game);
+                await _gamesDb.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
         }
 
         [HttpDelete]
@@ -119,6 +209,23 @@ namespace Gamezzz.Controllers
             await _gamesDb.SaveChangesAsync();
             RedirectToAction("Index");
             return Json(new { success = true, message = "Deleted successfully" });
+        }
+
+        private string UploadedFile(GameViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.gameImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.gameImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.gameImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
         #endregion
     }
