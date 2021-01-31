@@ -7,5 +7,5 @@
 
 
 
-![](.vs/Gamezzz/presentation/presentation3.png)
+
 
