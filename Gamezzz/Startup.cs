@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Gamezzz.Models;
+using Gamezzz.Services;
 
 namespace Gamezzz
 {
@@ -58,6 +59,10 @@ namespace Gamezzz
             services.AddRazorPages();
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+
+            services.AddScoped<IApiService, ApiService>();
+            services.AddScoped<IFavouritesService, FavouritesService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

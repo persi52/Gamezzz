@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Gamezzz.Models
 {
     public class AppUser : IdentityUser
-    {   
-       public string favouriteGames { get; set; }
+    {
+        public string favouriteGames { get; set; }
     }
 }

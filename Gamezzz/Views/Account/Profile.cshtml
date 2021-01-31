@@ -1,9 +1,28 @@
 ﻿@inject SignInManager<AppUser> signInManager;
+@inject UserManager<AppUser> userManager;
 
 @{
     ViewData["Title"] = "Profile";
 }
 
 <h1>Profile information</h1>
-<h3 style="color:green; display:inline;">Email:</h3><h3 style="display:inline;">  @User.Identity.Name</h3>
+<h3 style="color:green; display:inline;">Email:</h3>
+
+<h3 style="display:inline;">  @User.Identity.Name</h3>
+</br>
+</br>
+<h1>Favourite Games:</h1>
+<div class="col-8 border p-3">
+    <table id="ProfileDTLoad" class="table table-striped table-bordered" style="width:70%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
 

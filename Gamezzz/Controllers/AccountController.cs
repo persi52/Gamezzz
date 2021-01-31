@@ -25,6 +25,7 @@ namespace Gamezzz.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+          
             return RedirectToAction("index", "home");
         }
 
@@ -83,7 +84,7 @@ namespace Gamezzz.Controllers
             {
                 //IdentityUser signedUser = await userManager.FindByEmailAsync(model.Email);
                 //var result = await signInManager.PasswordSignInAsync(signedUser.Email, model.Password, model.RememberMe, false);
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);   ///this kurestwo mostly returns null
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);   
 
                 if (result.Succeeded)              
                 return RedirectToAction("index", "home");
