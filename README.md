@@ -1,3 +1,3 @@
 # Gamezz
 
-![](.vs/presentation/presentation1.png)
+![](.vs/Gamezzz/presentation/presentation1.png)
